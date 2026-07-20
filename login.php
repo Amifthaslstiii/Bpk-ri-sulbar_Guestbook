@@ -11,6 +11,8 @@ if(isset($_SESSION['admin'])){
 <html lang="id">
 <head>
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -86,9 +88,9 @@ if(isset($_SESSION['admin'])){
                     required>
 
 
-                    <span id="togglePassword">
-                        👁
-                    </span>
+                  <span id="togglePassword">
+    <i class="fa-solid fa-eye"></i>
+</span>
 
 
                 </div>
@@ -98,12 +100,13 @@ if(isset($_SESSION['admin'])){
 
 
 
+<button type="submit">
 
-            <button type="submit">
+<i class="fa-solid fa-right-to-bracket"></i>
 
-                LOGIN ADMINISTRATOR
+Masuk
 
-            </button>
+</button>
 
 
 
