@@ -11,15 +11,15 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $tanggal          = $_POST['tanggal'];
-    $nama             = $_POST['nama'];
-    $instansi         = $_POST['instansi'];
-    $email            = $_POST['email'];
-    $telepon          = $_POST['telepon'];
-    $jumlah_tamu      = $_POST['jumlah'];
-    $keperluan        = $_POST['keperluan'];
-    $jenis_identitas  = $_POST['jenis_identitas'];
-    $tanda_tangan     = $_POST['signature'];
+    $tanggal         = $_POST['tanggal'];
+    $nama            = $_POST['nama'];
+    $instansi        = $_POST['instansi'];
+    $email           = $_POST['email'];
+    $telepon         = $_POST['telepon'];
+    $jumlah_tamu     = $_POST['jumlah'];
+    $keperluan       = $_POST['keperluan'];
+    $jenis_identitas = $_POST['jenis_identitas'];
+    $tanda_tangan    = $_POST['signature'];
 
     $folder = "uploads/";
 
@@ -63,9 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (mysqli_query($conn, $sql)) {
 
-                /*=========================================
-                    SIMPAN KE FILE EXCEL
-                =========================================*/
+                /* ==========================
+                   SIMPAN KE EXCEL
+                ========================== */
 
                 $folderExcel = __DIR__ . DIRECTORY_SEPARATOR . "excel";
 
@@ -116,9 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
                 $writer->save($fileExcel);
 
-                /*=========================================
-                    BERHASIL
-                =========================================*/
+                
 
                 echo "
                 <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
@@ -126,12 +124,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <script>
 
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: 'Data tamu berhasil disimpan!',
+                    icon:'success',
+                    title:'Berhasil',
+                    text:'Data tamu berhasil disimpan!',
                     confirmButtonColor:'#fdb10d'
                 }).then(() => {
+
                     window.location='index.php';
+
                 });
 
                 </script>
