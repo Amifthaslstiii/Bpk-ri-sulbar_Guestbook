@@ -576,7 +576,7 @@ small{
 
 .guest-header{
 
-    background:#fdb10d;
+    background:#ffffff;
 
     height:110px;
 
@@ -678,14 +678,19 @@ small{
 
 .guest-header{
 
-    height:auto;
+    background:#fdb10d;
 
-    padding:20px;
+    height:110px;
 
-    flex-direction:column;
+    display:grid;
 
-    gap:15px;
+    grid-template-columns:300px 1fr 300px;
 
+    align-items:center;
+
+    padding:0 30px;
+
+}
 }
 
 .header-left{
@@ -696,9 +701,29 @@ small{
 
 }
 
+.header-center{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
 .header-center h1{
 
-    font-size:34px;
+    margin:0;
+
+    color:#fff;
+
+    font-size:58px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+
+    text-align:center;
 
 }
 
@@ -722,4 +747,4 @@ small{
 
     flex:none;
 
-} }
+} 
