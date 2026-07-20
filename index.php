@@ -3,26 +3,17 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+<title>Guest Book</title>
 
-    <title>Guest Book</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
-
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-    <!-- CSS -->
-
-    <link rel="stylesheet"
-        href="style.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -32,53 +23,54 @@
 
 <div class="card shadow-lg border-0">
 
-    <!-- HEADER -->
-   <div class="guest-header">
+<!-- ================= HEADER ================= -->
 
-    <div class="header-left">
+<div class="guest-header">
 
-        <img src="logo.png" class="logo-bpk" alt="Logo BPK">
+<div class="header-left">
 
-        <div class="header-info">
+<img src="logo.png" class="logo-bpk" alt="Logo">
 
-            <h4>BPK RI</h4>
+<div class="header-info">
 
-            <p>
-                PERWAKILAN PROVINSI<br>
-                SULAWESI BARAT
-            </p>
+<h4>BPK RI</h4>
 
-        </div>
-
-    </div>
-
-    <div class="header-center">
-
-        <h1>GUEST BOOK</h1>
-
-    </div>
+<p>
+PERWAKILAN PROVINSI<br>
+SULAWESI BARAT
+</p>
 
 </div>
 
-    <!-- BODY -->
-    <div class="card-body">
+</div>
+
+<div class="header-center">
+
+<h1>GUEST BOOK</h1>
+
+</div>
+
+<div style="width:220px;"></div>
+
+</div>
+
+<!-- ================= BODY ================= -->
+
+<div class="card-body">
 
 <form
 id="guestForm"
 action="simpan.php"
 method="POST"
 enctype="multipart/form-data">
-</div> <!-- card-body -->
 
-</div> <!-- card -->
-
+<!-- ================= TANGGAL ================= -->
 
 <div class="mb-3">
 
 <label class="form-label">
 
 Tanggal Kunjungan
-
 <span class="text-danger">*</span>
 
 </label>
@@ -92,14 +84,13 @@ required>
 
 </div>
 
-<!-- Nama -->
+<!-- ================= NAMA ================= -->
 
 <div class="mb-3">
 
 <label class="form-label">
 
 Nama
-
 <span class="text-danger">*</span>
 
 </label>
@@ -113,14 +104,13 @@ required>
 
 </div>
 
-<!-- Instansi -->
+<!-- ================= INSTANSI ================= -->
 
 <div class="mb-3">
 
 <label class="form-label">
 
 Asal Instansi
-
 <span class="text-danger">*</span>
 
 </label>
@@ -134,7 +124,7 @@ required>
 
 </div>
 
-<!-- Email -->
+<!-- ================= EMAIL ================= -->
 
 <div class="mb-3">
 
@@ -152,14 +142,13 @@ placeholder="email@gmail.com">
 
 </div>
 
-<!-- Telepon -->
+<!-- ================= TELEPON ================= -->
 
 <div class="mb-3">
 
 <label class="form-label">
 
 No Telepon
-
 <span class="text-danger">*</span>
 
 </label>
@@ -173,7 +162,7 @@ required>
 
 </div>
 
-<!-- Jumlah -->
+<!-- ================= JUMLAH ================= -->
 
 <div class="mb-3">
 
@@ -192,31 +181,26 @@ min="1">
 
 </div>
 
-<!-- Keperluan -->
+<!-- ================= KEPERLUAN ================= -->
 
 <div class="mb-3">
 
 <label class="form-label">
 
 Keperluan
-
 <span class="text-danger">*</span>
 
 </label>
 
 <textarea
-
 class="form-control"
-
 name="keperluan"
-
 rows="4"
-
-required>
-
-</textarea>
+required></textarea>
 
 </div>
+
+<!-- ================= IDENTITAS ================= -->
 
 <div class="row">
 
@@ -224,22 +208,17 @@ required>
 
 <label class="form-label">
 
-Identitas
+Jenis Identitas
 
 </label>
 
 <select
-
 class="form-select"
-
 name="jenis_identitas">
 
 <option>KTP</option>
-
 <option>SIM</option>
-
 <option>ID Card</option>
-
 <option>Tanda Pengenal</option>
 
 </select>
@@ -251,108 +230,93 @@ name="jenis_identitas">
 <label class="form-label">
 
 Upload Identitas
+<small class="text-muted">(Opsional)</small>
 
 </label>
 
 <input
-
 type="file"
-
 class="form-control"
-
 id="identitas"
-
 name="identitas"
-
-accept=".jpg,.jpeg,.png,.pdf"
-
+accept=".jpg,.jpeg,.png,.pdf" 
 required>
 
 </div>
 
 </div>
+<!-- ================= PREVIEW IDENTITAS ================= -->
 
-<div class="mt-4">
+<div class="row mt-4">
 
-<h6>
+    <!-- Preview Identitas -->
 
-Preview Identitas
+    <div class="col-md-6">
 
-</h6>
+        <label class="form-label fw-bold">
+            Preview Identitas
+        </label>
 
-<div class="preview-box">
+        <div class="preview-box">
 
-<img
+            <img
+                id="previewImage"
+                src=""
+                style="display:none;">
 
-id="previewImage"
+            <p
+                id="fileName"
+                class="mt-2">
+            </p>
 
-src=""
-
-style="display:none;">
-
-<p
-
-id="fileName"
-
-class="mt-2">
-
-</p>
-
-</div>
-
-</div>
-
-<!-- ============================
-     TANDA TANGAN
-============================= -->
-
-<div class="mt-4">
-
-    <label class="form-label fw-bold">
-
-        Paraf / Tanda Tangan
-
-        <span class="text-danger">*</span>
-
-    </label>
-
-    <div class="signature-container">
-
-        <canvas
-            id="signature-pad"
-            width="900"
-            height="220">
-        </canvas>
+        </div>
 
     </div>
 
-    <small class="text-muted">
+    <!-- Signature -->
 
-        Gunakan pen atau sentuh layar untuk menandatangani.
+    <div class="col-md-6">
 
-    </small>
+        <label class="form-label fw-bold">
 
-    <input
-        type="hidden"
-        name="signature"
-        id="signature">
+            Paraf / Tanda Tangan
+
+            <span class="text-danger">*</span>
+
+        </label>
+
+        <div class="signature-container">
+
+            <canvas
+                id="signature-pad">
+            </canvas>
+
+        </div>
+
+        <small class="text-muted">
+
+            Gunakan pen atau sentuh layar.
+
+        </small>
+
+        <input
+            type="hidden"
+            name="signature"
+            id="signature">
+
+    </div>
 
 </div>
 
-<!-- ============================
-     BUTTON
-============================= -->
+<!-- ================= BUTTON ================= -->
 
 <div class="row mt-4">
 
     <div class="col-md-6 mb-2">
 
         <button
-
             type="button"
-
             id="clearSignature"
-
             class="btn btn-danger w-100">
 
             <i class="fa-solid fa-trash"></i>
@@ -366,9 +330,7 @@ class="mt-2">
     <div class="col-md-6 mb-2">
 
         <button
-
             type="submit"
-
             class="btn btn-primary w-100">
 
             <i class="fa-solid fa-floppy-disk"></i>
@@ -389,16 +351,11 @@ class="mt-2">
 
 </div>
 
-<!-- ============================
-     MODAL BERHASIL
-============================= -->
+<!-- ================= MODAL ================= -->
 
 <div
-
 class="modal fade"
-
 id="successModal"
-
 tabindex="-1">
 
 <div class="modal-dialog modal-dialog-centered">
@@ -417,16 +374,14 @@ Berhasil
 
 <div class="modal-body">
 
-Data Buku Tamu berhasil disimpan.
+Data berhasil disimpan.
 
 </div>
 
 <div class="modal-footer">
 
 <button
-
 class="btn btn-success"
-
 data-bs-dismiss="modal">
 
 OK
