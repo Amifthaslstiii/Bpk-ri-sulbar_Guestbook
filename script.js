@@ -182,9 +182,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-    /*==========================================
-            HANYA ANGKA
-    ==========================================*/
 
     const telepon = document.querySelector(
         "input[name='telepon']"
@@ -195,5 +192,47 @@ document.addEventListener("DOMContentLoaded", function () {
         this.value = this.value.replace(/[^0-9]/g, "");
 
     });
+
+});
+
+const camera = document.getElementById("camera");
+const canvas = document.getElementById("canvas");
+const capture = document.getElementById("capture");
+const openCamera = document.getElementById("openCamera");
+const preview = document.getElementById("previewImage");
+
+let stream;
+
+openCamera.addEventListener("click", async function(){
+
+    stream = await navigator.mediaDevices.getUserMedia({
+        video:true
+    });
+
+    camera.srcObject = stream;
+
+    camera.style.display="block";
+    capture.style.display="inline-block";
+
+});
+
+capture.addEventListener("click",function(){
+
+    canvas.width = camera.videoWidth;
+    canvas.height = camera.videoHeight;
+
+    canvas.getContext("2d").drawImage(
+        camera,
+        0,
+        0
+    );
+
+    preview.src = canvas.toDataURL("image/png");
+    preview.style.display="block";
+
+    stream.getTracks().forEach(track=>track.stop());
+
+    camera.style.display="none";
+    capture.style.display="none";
 
 });
