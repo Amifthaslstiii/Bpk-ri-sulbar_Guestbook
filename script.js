@@ -1,166 +1,238 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+/*==========================================
+        BUKU TAMU DIGITAL
+==========================================*/
 
-include "koneksi.php";
+document.addEventListener("DOMContentLoaded", function () {
 
-require 'vendor/autoload.php';
+    /*==========================================
+            TANGGAL OTOMATIS
+    ==========================================*/
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+    const tanggal = document.getElementById("tanggal");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (tanggal) {
 
-    $tanggal         = $_POST['tanggal'];
-    $nama            = $_POST['nama'];
-    $instansi        = $_POST['instansi'];
-    $email           = $_POST['email'];
-    $telepon         = $_POST['telepon'];
-    $jumlah_tamu     = $_POST['jumlah'];
-    $keperluan       = $_POST['keperluan'];
-    $jenis_identitas = $_POST['jenis_identitas'];
-    $tanda_tangan    = $_POST['signature'];
+        const today = new Date();
 
-    $folder = "uploads/";
+        const yyyy = today.getFullYear();
 
-    if (!is_dir($folder)) {
-        mkdir($folder, 0777, true);
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+
+        const dd = String(today.getDate()).padStart(2, "0");
+
+        tanggal.value = `${yyyy}-${mm}-${dd}`;
+
     }
 
-    if ($_FILES['identitas']['error'] == 0) {
+    /*==========================================
+            PREVIEW IDENTITAS
+    ==========================================*/
 
-        $namaFile = time() . "_" . basename($_FILES["identitas"]["name"]);
-        $tujuan   = $folder . $namaFile;
+    const upload = document.getElementById("identitas");
 
-        if (move_uploaded_file($_FILES["identitas"]["tmp_name"], $tujuan)) {
+    const preview = document.getElementById("previewImage");
 
-            $sql = "INSERT INTO tamu
-            (
-                tanggal,
-                nama,
-                instansi,
-                email,
-                telepon,
-                jumlah_tamu,
-                keperluan,
-                jenis_identitas,
-                file_identitas,
-                tanda_tangan
-            )
-            VALUES
-            (
-                '$tanggal',
-                '$nama',
-                '$instansi',
-                '$email',
-                '$telepon',
-                '$jumlah_tamu',
-                '$keperluan',
-                '$jenis_identitas',
-                '$namaFile',
-                '$tanda_tangan'
-            )";
+    const fileName = document.getElementById("fileName");
 
-            if (mysqli_query($conn, $sql)) {
+    upload.addEventListener("change", function () {
 
-                /* ==========================
-                   SIMPAN KE EXCEL
-                ========================== */
+        const file = this.files[0];
 
-                $folderExcel = __DIR__ . DIRECTORY_SEPARATOR . "excel";
+        if (!file) return;
 
-                if (!is_dir($folderExcel)) {
-                    mkdir($folderExcel, 0777, true);
-                }
+        const maxSize = 2 * 1024 * 1024;
 
-                $fileExcel = $folderExcel . DIRECTORY_SEPARATOR . "buku_tamu.xlsx";
+        if (file.size > maxSize) {
 
-                if (file_exists($fileExcel)) {
+            Swal.fire({
 
-                    $spreadsheet = IOFactory::load($fileExcel);
+                icon: "error",
 
-                } else {
+                title: "Ukuran File Terlalu Besar",
 
-                    $spreadsheet = new Spreadsheet();
+                text: "Ukuran maksimal 2 MB."
 
-                    $sheet = $spreadsheet->getActiveSheet();
+            });
 
-                    $sheet->setCellValue('A1', 'Tanggal');
-                    $sheet->setCellValue('B1', 'Nama');
-                    $sheet->setCellValue('C1', 'Instansi');
-                    $sheet->setCellValue('D1', 'Email');
-                    $sheet->setCellValue('E1', 'Telepon');
-                    $sheet->setCellValue('F1', 'Jumlah Tamu');
-                    $sheet->setCellValue('G1', 'Keperluan');
-                    $sheet->setCellValue('H1', 'Jenis Identitas');
-                    $sheet->setCellValue('I1', 'File Identitas');
-                    $sheet->setCellValue('J1', 'Tanggal Input');
+            upload.value = "";
 
-                }
+            preview.style.display = "none";
 
-                $sheet = $spreadsheet->getActiveSheet();
+            fileName.innerHTML = "";
 
-                $baris = $sheet->getHighestRow() + 1;
-
-                $sheet->setCellValue('A'.$baris, $tanggal);
-                $sheet->setCellValue('B'.$baris, $nama);
-                $sheet->setCellValue('C'.$baris, $instansi);
-                $sheet->setCellValue('D'.$baris, $email);
-                $sheet->setCellValue('E'.$baris, $telepon);
-                $sheet->setCellValue('F'.$baris, $jumlah_tamu);
-                $sheet->setCellValue('G'.$baris, $keperluan);
-                $sheet->setCellValue('H'.$baris, $jenis_identitas);
-                $sheet->setCellValue('I'.$baris, $namaFile);
-                $sheet->setCellValue('J'.$baris, date("d-m-Y H:i:s"));
-
-                $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-                $writer->save($fileExcel);
-
-                
-
-                echo "
-                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-
-                <script>
-
-                Swal.fire({
-                    icon:'success',
-                    title:'Berhasil',
-                    text:'Data tamu berhasil disimpan!',
-                    confirmButtonColor:'#fdb10d'
-                }).then(() => {
-
-                    window.location='index.php';
-
-                });
-
-                </script>
-                ";
-
-                exit;
-
-            } else {
-
-                die("Error MySQL : " . mysqli_error($conn));
-
-            }
-
-        } else {
-
-            die("Upload file identitas gagal.");
+            return;
 
         }
 
-    } else {
+        fileName.innerHTML = file.name;
 
-        die("File identitas belum dipilih.");
+        if (file.type.startsWith("image/")) {
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+
+                preview.src = e.target.result;
+
+                preview.style.display = "block";
+
+            }
+
+            reader.readAsDataURL(file);
+
+        }
+
+        else {
+
+            preview.style.display = "none";
+
+        }
+
+    });
+
+    /*==========================================
+            SIGNATURE PAD
+    ==========================================*/
+
+    const canvas = document.getElementById("signature-pad");
+
+    const signaturePad = new SignaturePad(canvas, {
+
+        backgroundColor: "rgb(255,255,255)",
+
+        penColor: "black"
+
+    });
+
+    /*==========================================
+            RESPONSIVE CANVAS
+    ==========================================*/
+
+    function resizeCanvas() {
+
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+
+        canvas.width = canvas.offsetWidth * ratio;
+
+        canvas.height = canvas.offsetHeight * ratio;
+
+        canvas.getContext("2d").scale(ratio, ratio);
+
+        signaturePad.clear();
 
     }
 
-} else {
+    window.addEventListener("resize", resizeCanvas);
 
-    header("Location:index.php");
-    exit;
+    resizeCanvas();
+        /*==========================================
+            HAPUS TANDA TANGAN
+    ==========================================*/
 
-}
-?>
+    document
+        .getElementById("clearSignature")
+        .addEventListener("click", function () {
+
+            signaturePad.clear();
+
+        });
+
+    /*==========================================
+            VALIDASI FORM
+    ==========================================*/
+
+    const form = document.getElementById("guestForm");
+
+    form.addEventListener("submit", function (e) {
+
+        if (signaturePad.isEmpty()) {
+
+            e.preventDefault();
+
+            Swal.fire({
+
+                icon: "warning",
+
+                title: "Oops...",
+
+                text: "Silakan isi tanda tangan terlebih dahulu."
+
+            });
+
+            return;
+
+        }
+
+        document.getElementById("signature").value =
+            signaturePad.toDataURL("image/png");
+
+        Swal.fire({
+
+            icon: "success",
+
+            title: "Sedang Menyimpan...",
+
+            text: "Mohon tunggu sebentar.",
+
+            timer: 1500,
+
+            showConfirmButton: false
+
+        });
+
+    });
+
+
+    const telepon = document.querySelector(
+        "input[name='telepon']"
+    );
+
+    telepon.addEventListener("input", function () {
+
+        this.value = this.value.replace(/[^0-9]/g, "");
+
+    });
+
+});
+
+const camera = document.getElementById("camera");
+const canvas = document.getElementById("canvas");
+const capture = document.getElementById("capture");
+const openCamera = document.getElementById("openCamera");
+const preview = document.getElementById("previewImage");
+
+let stream;
+
+openCamera.addEventListener("click", async function(){
+
+    stream = await navigator.mediaDevices.getUserMedia({
+        video:true
+    });
+
+    camera.srcObject = stream;
+
+    camera.style.display="block";
+    capture.style.display="inline-block";
+
+});
+
+capture.addEventListener("click",function(){
+
+    canvas.width = camera.videoWidth;
+    canvas.height = camera.videoHeight;
+
+    canvas.getContext("2d").drawImage(
+        camera,
+        0,
+        0
+    );
+
+    preview.src = canvas.toDataURL("image/png");
+    preview.style.display="block";
+
+    stream.getTracks().forEach(track=>track.stop());
+
+    camera.style.display="none";
+    capture.style.display="none";
+
+});
